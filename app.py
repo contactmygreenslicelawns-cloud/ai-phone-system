@@ -282,6 +282,20 @@ def call_status():
         logger.error(f"Error in call_status: {str(e)}")
         return Response('Error', mimetype='text/plain')
 
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint"""
+    return {
+        'status': 'AI Phone Integration Active',
+        'business': BUSINESS_NAME,
+        'endpoints': {
+            'voice': '/voice (POST)',
+            'health': '/health (GET)',
+            'test_tts': '/test_tts (GET)'
+        },
+        'timestamp': datetime.now().isoformat()
+    }
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
