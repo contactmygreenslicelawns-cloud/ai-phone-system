@@ -310,6 +310,9 @@ if __name__ == '__main__':
     # Check if we have demo values
     demo_mode = os.getenv('TWILIO_ACCOUNT_SID') == 'demo_account_sid'
     
+    # Get port from environment variable (Railway sets this automatically)
+    port = int(os.environ.get("PORT", 5000))
+    
     if missing_vars and not demo_mode:
         logger.error(f"Missing required environment variables: {missing_vars}")
         print(f"Please set the following environment variables: {missing_vars}")
@@ -321,4 +324,5 @@ if __name__ == '__main__':
         else:
             logger.info(f"Starting AI Phone Integration for {BUSINESS_NAME}")
         
-        app.run(host='0.0.0.0', port=5000, debug=False)
+        print(f"🚀 Starting server on port {port}")
+        app.run(host='0.0.0.0', port=port, debug=False)
