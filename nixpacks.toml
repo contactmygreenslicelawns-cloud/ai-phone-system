@@ -1,2 +1,2 @@
 [start]
-cmd = "gunicorn --bind 0.0.0.0:$PORT main:app"
+cmd = "gunicorn --bind 0.0.0.0:$PORT railway_app:app"
