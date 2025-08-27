@@ -160,7 +160,10 @@ def process_speech():
         if OWNER_PHONE:
             response.dial(OWNER_PHONE)
         return Response(str(response), mimetype='text/xml')
-
+@app.route('/test', methods=['GET'])
+def simple_test():
+    """Simple test endpoint"""
+    return "Flask is working!"
 @app.route('/process_followup', methods=['POST'])
 def process_followup():
     """Handle follow-up questions"""
