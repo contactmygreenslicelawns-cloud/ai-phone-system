@@ -1,4 +1,3 @@
-
 from flask import Flask, request, Response
 import requests
 import os
@@ -37,9 +36,28 @@ FORWARD_KEYWORDS = [
     'representative', 'billing', 'payment issue'
 ]
 
-@app.route('/voice', methods=['POST'])
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint"""
+    return {
+        'status': 'AI Phone Integration Active',
+        'business': BUSINESS_NAME,
+        'endpoints': {
+            'voice': '/voice (POST)',
+            'health': '/health (GET)',
+            'test_tts': '/test_tts (GET)'
+        },
+        'timestamp': datetime.now().isoformat()
+    }
+
+@app.route('/voice', methods=['GET', 'POST'])
 def handle_incoming_call():
     """Handle incoming voice calls"""
+    # Handle GET requests (for browser testing)
+    if request.method == 'GET':
+        return "Voice endpoint is ready for Twilio POST requests"
+    
+    # Handle POST requests (from Twilio)
     try:
         # Get caller information
         caller_number = request.form.get('From', 'Unknown')
@@ -301,27 +319,6 @@ def test_tts():
         voice='Polly.Joanna'
     )
     return Response(str(response), mimetype='text/xml')
-
-@app.route('/', methods=['GET'])
-def root():
-    """Root endpoint"""
-    return {
-        'status': 'AI Phone Integration Active',
-        'business': BUSINESS_NAME,
-        'endpoints': {
-            'voice': '/voice (POST)',
-            'health': '/health (GET)',
-            'test_tts': '/test_tts (GET)'
-        },
-        'timestamp': datetime.now().isoformat()
-    }
-
-@app.route('/voice', methods=['GET', 'POST'])  # Add GET method
-def handle_incoming_call():
-    if request.method == 'GET':
-        return "Voice endpoint is ready for Twilio POST requests"
-
-    # Your existing POST logic here...
 
 if __name__ == '__main__':
     # Validate required environment variables
