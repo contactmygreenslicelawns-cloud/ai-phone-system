@@ -302,6 +302,27 @@ def test_tts():
     )
     return Response(str(response), mimetype='text/xml')
 
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint"""
+    return {
+        'status': 'AI Phone Integration Active',
+        'business': BUSINESS_NAME,
+        'endpoints': {
+            'voice': '/voice (POST)',
+            'health': '/health (GET)',
+            'test_tts': '/test_tts (GET)'
+        },
+        'timestamp': datetime.now().isoformat()
+    }
+
+@app.route('/voice', methods=['GET', 'POST'])  # Add GET method
+def handle_incoming_call():
+    if request.method == 'GET':
+        return "Voice endpoint is ready for Twilio POST requests"
+
+    # Your existing POST logic here...
+
 if __name__ == '__main__':
     # Validate required environment variables
     required_vars = ['TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN', 'OWNER_PHONE', 'WEBHOOK_BASE_URL']
